@@ -1,9 +1,6 @@
-setwd("C:/Users/gisadmin/Dropbox/?w??\/2016_???Ԋw??/bayes_data")
+setwd("C:/Users/gisadmin/Dropbox/学会発表/2016_生態学会/bayes_data")
 source("R2WBwrapper.R")
-load("d5.Rdata")
-variables<-data5[,6804:6822]
-records<-data5[,1:6803]
-
+load("C:/Users/gisadmin/Dropbox/学会発表/2016_生態学会/bayes_data/d5.Rdata")
 
 setwd("F:/test/testmodel")
 
