@@ -3,7 +3,6 @@ source("R2WBwrapper.R")
 load("C:/Users/gisadmin/Dropbox/学会発表/2016_生態学会/bayes_data/d5.Rdata")
 
 setwd("F:/test/testmodel")
-
 ########################################model1
 m1<-"model{
   for(i in 1:N_site){
@@ -98,8 +97,8 @@ set.data("v1", as.vector(data5$maxtemp_annual))
 set.param("p",rep(0.25,N_site))
 set.param("b0",0.25)
 set.param("b1",0.25)
-set.param("psi",rep(0.2,N_site))
-set.param("z",rep(1,N_site))
+#set.param("psi",rep(0.2,N_site))
+#set.param("z",rep(1,N_site))
 post.bugs_m4 <- call.bugs( 
   model.file = "m4.txt",
   n.iter = 5000, n.burnin = 2000, n.thin = 1,
@@ -113,22 +112,29 @@ m5<-"model{
     y[i]~dbin(mu[i],K[i])
     mu[i]<-p[i]*z[i]
     z[i]~dbern(psi[i])
-    logit(psi[i])<-b0+b1*v1[i]
+    logit(psi[i])<-b0+b1*v1[i]+r[i]
     p[i]~dunif(0,1)
   }
+  r[1:N_site]~car.normal(Adj[], Weights[], Num[], tau)
   b0~dunif(0,1)
   b1~dunif(0,1)
+  tau~dunif(-10000,10000)
 }"
 write(m5, file="m5.txt")
 
 clear.data.param() # for initialization
 set.data("N_site", N_site)
+set.data("Adj", Adj)
+set.data("Weights", Weights)
+set.data("Num", Num)
 set.data("y", as.vector(data5$sp1))
 set.data("K", as.vector(data5$trial.ref))
 set.data("v1", as.vector(data5$maxtemp_annual))
 set.param("p",rep(0.25,N_site))
+set.param("r",rep(0.25,N_site))
 set.param("b0",0.25)
 set.param("b1",0.25)
+set.param("tau",1)
 #set.param("psi",rep(0.2,N_site))
 #set.param("z",rep(1,N_site))
 post.bugs_m5 <- call.bugs( 
@@ -136,6 +142,42 @@ post.bugs_m5 <- call.bugs(
   n.iter = 5000, n.burnin = 2000, n.thin = 1,
   debug=T)
 
+#######################################model6
+#ramdam but fix p
 
+m6<-"model{
+    for(i in 1:N_site){
+    y[i]~dbin(mu[i],K[i])
+    mu[i]<-p*z[i]
+    z[i]~dbern(psi[i])
+    logit(psi[i])<-b0+b1*v1[i]+r[i]
+  }
+  r[1:N_site]~car.normal(Adj[], Weights[], Num[], tau)
+  b0~dunif(0,1)
+  b1~dunif(0,1)
+  p~dunif(0,1)
+  tau~dunif(-100000,100000)
+}"
+write(m6, file="m6.txt")
+
+clear.data.param() # for initialization
+set.data("N_site", N_site)
+set.data("Adj", Adj)
+set.data("Weights", Weights)
+set.data("Num", Num)
+set.data("y", as.vector(data5$sp1))
+set.data("K", as.vector(data5$trial.ref))
+set.data("v1", as.vector(data5$maxtemp_annual))
+set.param("p",0.25)
+set.param("r",rep(0.25,N_site))
+set.param("b0",0.25)
+set.param("b1",0.25)
+set.param("tau",1)
+#set.param("psi",rep(0.2,N_site))
+#set.param("z",rep(1,N_site))
+post.bugs_m6 <- call.bugs( 
+  model.file = "m6.txt",
+  n.iter = 5000, n.burnin = 2000, n.thin = 1,
+  debug=T)
 
 
