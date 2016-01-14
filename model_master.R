@@ -3,6 +3,7 @@ source("R2WBwrapper.R")
 load("C:/Users/gisadmin/Dropbox/学会発表/2016_生態学会/bayes_data/d5.Rdata")
 
 setwd("F:/test/testmodel")
+sp?
 
 ########################################model1
 m1<-"model{
