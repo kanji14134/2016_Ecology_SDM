@@ -98,8 +98,8 @@ set.data("v1", as.vector(data5$maxtemp_annual))
 set.param("p",rep(0.25,N_site))
 set.param("b0",0.25)
 set.param("b1",0.25)
-set.param("psi",rep(0.2,N_site))
-set.param("z",rep(1,N_site))
+#set.param("psi",rep(0.2,N_site))
+#set.param("z",rep(1,N_site))
 post.bugs_m4 <- call.bugs( 
   model.file = "m4.txt",
   n.iter = 5000, n.burnin = 2000, n.thin = 1,
