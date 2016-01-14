@@ -3,13 +3,13 @@ source("R2WBwrapper.R")
 load("C:/Users/gisadmin/Dropbox/学会発表/2016_生態学会/bayes_data/d5.Rdata")
 
 setwd("F:/test/testmodel")
-test2
+
 ########################################model1
 m1<-"model{
-for(i in 1:N_site){
-y[i]~dbern(psi)
-}
-psi~dunif(0,1)
+  for(i in 1:N_site){
+    y[i]~dbern(psi)
+  }
+  psi~dunif(0,1)
 }"
 write(m1, file="m1.txt")
 clear.data.param() # for initialization
@@ -129,7 +129,7 @@ set.data("v1", as.vector(data5$maxtemp_annual))
 set.param("p",rep(0.25,N_site))
 set.param("b0",0.25)
 set.param("b1",0.25)
-set.param("psi",rep(0.2,N_site))
+#set.param("psi",rep(0.2,N_site))
 #set.param("z",rep(1,N_site))
 post.bugs_m5 <- call.bugs( 
   model.file = "m5.txt",
